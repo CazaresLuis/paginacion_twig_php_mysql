@@ -1,0 +1,62 @@
+{% extends 'default_layout.html'%}
+
+{% block contenidos %}
+<div class="container">
+	<h3>Paginación con php, twig y mysql</h3>
+	<div class="pagination pagination-centered">
+	  <ul>
+	  	<li><a href="?pag=1"><<</a></li>
+	    <li><a href="?pag={{ pagina_anterior }}"><</a></li>
+	    {% for key,pag in paginas %}
+	    	{% if key >= pagina_inicial and key <= pagina_final %}
+	    	<li><a href="{{ pag }}" {{ key == pagina_actual ? 'style="font-weight: bold; text-decoration:underline;"' : "" }}>{{ key }}</a></li>
+	    	{% endif %}
+	    {% endfor %}
+	    <li><a href="?pag={{ pagina_siguiente }}">></a></li>
+	    <li><a href="?pag={{ ultima_pagina }}">>></a></li>
+	  </ul>
+	</div>
+	<table class="table table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nombre</th>
+				<th>E-Mail</th>
+				<th>Status</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="lista_registro">
+			{% for registro in lista_paginada %}
+			<tr>
+				<td>{{ registro.id_registro }}</td>
+				<td>{{ registro.rg_nombre }}</td>
+				<td>{{ registro.rg_email }}</td>
+				<td style="text-align:center;">
+					{% set color = "label-info" %}
+			    	{% set texto = "Registrado" %}
+
+			    	{% if registro.rg_status == '2' %}
+			    		{% set color = "label-success" %}
+			    		{% set texto = "Pagado" %}
+			    	{% elseif registro.rg_status == '3' %}
+			    		{% set color = "label-warning" %}
+			    		{% set texto = "Cancelado" %}
+			    	{% endif%}
+					<span class="label {{ color }}">{{ texto }}</span>
+				</td>
+				<td style="text-align:center;"> <button class="btn btn-mini"><i class="icon-pencil"></i></button> </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+	$(function(){
+		
+	});
+</script>
+{% endblock %}
